@@ -1,4 +1,5 @@
 <?php 
+// Includes
 include 'inc/admin/header.php';
 include 'inc/admin/topbar.php';
 include 'inc/admin/menubar.php';
