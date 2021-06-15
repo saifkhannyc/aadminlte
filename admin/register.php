@@ -1,6 +1,6 @@
 <?php 
  include 'inc/auth/header.php';
- // Registration php Code
+ // Registration Php Code Starts here
 
  if(isset($_POST) && !empty($_POST)) { 
    $errors = array();	
