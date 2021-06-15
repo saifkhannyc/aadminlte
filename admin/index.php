@@ -24,7 +24,7 @@
       $address               =$row['address'];
       $image                 =$row['image'];
       $join_date             =$row['join_date'];
-
+      // Check user password and email and status
       if($_SESSION['email']==$email && $password==$hashpassword) { 
        
        header("Location:dashboard.php");
