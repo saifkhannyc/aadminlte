@@ -1,6 +1,6 @@
 # aadminlte
-A modern blog management system designed using bootstrap, AdminLte dashboard , raw php and mySQL
 
+A modern blog/ content management system designed using bootstrap, AdminLte dashboard , raw php and mySQL
 
 - User Registration
 - Secured Login
@@ -8,4 +8,3 @@ A modern blog management system designed using bootstrap, AdminLte dashboard , r
 - Admin Dashboaord
 - Add New User
 - Add Post
-
