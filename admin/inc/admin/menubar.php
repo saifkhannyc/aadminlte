@@ -65,6 +65,32 @@
       </li>
      </ul>
     </li>
+    <li class="nav-item">
+     <a href="#" class="nav-link">
+      <i class="fas fa-newspaper"></i>
+      <p>
+       Posts
+       <i class="right fas fa-angle-left"></i>
+      </p>
+     </a>
+     <ul class="nav nav-treeview">
+
+      <!-- Manage All Posts -->
+      <li class="nav-item">
+       <a href="posts.php?do=Manage" class="nav-link">
+        <i class="fas fa-blog"></i>
+        <p>Manage All Posts</p>
+       </a>
+      </li>
+      <li class="nav-item">
+       <a href="posts.php?do=Add" class="nav-link">
+        <i class="fas fa-pen-square"></i>
+        <p>Add New Post</p>
+       </a>
+      </li>
+     </ul>
+
+    </li>
     <?php
       if($_SESSION['user_role']==1){ ?>
     <li class="nav-item">

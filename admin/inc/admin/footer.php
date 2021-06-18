@@ -52,6 +52,9 @@ $.widget.bridge('uibutton', $.ui.button)
 <script>
 CKEDITOR.replace('cat_desc');
 </script>
+<script>
+CKEDITOR.replace('posts_desc');
+</script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="dist/js/pages/dashboard.js"></script>
 <?php 
