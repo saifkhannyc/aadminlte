@@ -47,7 +47,6 @@ include 'inc/admin/menubar.php';
         <tr>
          <th scope="col">SL#</th>
          <th scope="col">Title</th>
-         <th scope="col">Description</th>
          <th scope="col">Thumbnail</th>
          <th scope="col">Category</th>
          <th scope="col">Author</th>
@@ -62,6 +61,12 @@ include 'inc/admin/menubar.php';
          <?php 
          $query="SELECT * FROM posts ORDER BY post_id DESC";
          $allPosts=mysqli_query($dbc,$query);
+         $count=mysqli_num_rows($allPosts);
+         if($count<= 0) { 
+
+          echo '<div class="alert alert-info"> There are no posts. Please Add new Post.</div>';
+         }
+
          $i=0;
 
          while($row=mysqli_fetch_assoc($allPosts)){ 
@@ -80,7 +85,6 @@ include 'inc/admin/menubar.php';
          <tr>
           <td scope="row"><?php echo $i; ?></td>
           <td scope="row"><?php echo $title; ?></td>
-          <td scope="row"><?php echo $description; ?></td>
           <td scope="row">
            <?php if(!empty($image)){ ?>
 
@@ -174,30 +178,51 @@ include 'inc/admin/menubar.php';
             placeholder="Enter post title">
           </div>
           <div class="form-group">
+           <label for="title">Category</label>
+           <select name="category_id" class="form-control">
+            <option value="0">Please select category/sub-category</option>
+            <?php 
+             $query="SELECT * FROM category where parent_id=0 order by cat_name ASC";
+             $parent_cat=mysqli_query($dbc, $query);
+             while ($row=mysqli_fetch_assoc($parent_cat)){ 
+               $cat_id =$row['cat_id'];
+               $cat_name=$row['cat_name'];
+               $parent_id=$row['parent_id']; ?>
+
+            <option value="<?php echo $cat_id; ?>"><?php echo $cat_name; ?></option>
+
+            <?php  
+             }
+            ?>
+           </select>
+          </div>
+          <div class="form-group">
            <label for="description">Description</label>
            <textarea id="posts_desc" class="form-control" rows="4" name="description"></textarea>
           </div>
           <div class="form-group">
-           <label for="email">Email</label>
-           <input type="email" name="email" id="" class="form-control" required autocomplete="off"
-            placeholder="Enter user email">
+           <label for="tags">Meta Tags</label>
+           <input type="tags" name="tags" id="" class="form-control" required autocomplete="off"
+            placeholder="Enter post tags separated by commas">
           </div>
           <div class="form-group">
-           <label for="password">Password</label>
-           <input type="password" name="password" id="" class="form-control" required autocomplete="off"
-            placeholder="Enter password">
+           <label for="status">Post Status</label>
+           <select name="status" class="form-control">
+            <option value="0">Please select status</option>
+            <option value="1">Active</option>
+            <option value="2">Inactive</option>
+           </select>
           </div>
           <div class="form-group">
-           <label for="re-password">Re-type Password</label>
-           <input type="password" name="re-password" id="" class="form-control" required autocomplete="off"
-            placeholder="Re-enter password">
+           <label for="image">Select Post thumbnail</label>
+           <input type="file" name="image" id="" class="form-control-file">
           </div>
          </div>
 
 
          <div class="col-lg-12">
           <div class="form-group">
-           <input type="submit" name="register" id="" class="btn btn-primary float-lg-right" value="Add New User">
+           <input type="submit" name="publish" id="" class="btn btn-primary float-lg-right" value="Publish Post">
           </div>
          </div>
         </div>
@@ -211,41 +236,33 @@ include 'inc/admin/menubar.php';
       //  Insert the inputted New User data into the database from the form
        else if ($do=="Insert"){ 
         // PHP code to insert data into the database
-        if(isset($_POST['register'])){ 
-          $fullname     =$_POST['fullname'];
-          $username     =$_POST['username'];
-          $email        =$_POST['email'];
-          $phone        =$_POST['phone'];
-          $address      =$_POST['address'];
-          $status       =$_POST['status'];
-          $user_role    =$_POST['user_role'];
+        if(isset($_POST['publish'])){ 
+          $title              =mysqli_real_escape_string($dbc,$_POST['title']);
+          $category_id        =mysqli_real_escape_string($dbc,$_POST['category_id']);
+          $description        =mysqli_real_escape_string($dbc,$_POST['description']);
+          $tags               =mysqli_real_escape_string($dbc,$_POST['tags']);
+          $status             =mysqli_real_escape_string($dbc,$_POST['status']);
+          $author_id          =mysqli_real_escape_string($dbc,$_SESSION['user_id']);
           // Get the Image File and Name
           $image        =$_FILES['image']['name'];
           // Get the Image File and Temporary Folder Name
           $image_tmp    =$_FILES['image']['tmp_name'];
-
-          $password     =$_POST['password'];
-          $repassword   =$_POST['re-password'];
-          // Check to see if password and repeat password match
-          if($password==$repassword) { 
-            // hashed password
-            $hashedpass=sha1($password);
-            $randomNumber=rand(0,9999999);
+          $randomNumber=rand(0,9999999);
             // Change Image Name
             $imageFileName=$randomNumber.$image;
             // Move uploaded file from temporary folder to destination Folder
-            move_uploaded_file($image_tmp, "dist/img/users/".$imageFileName);
+            move_uploaded_file($image_tmp, "dist/img/posts/".$imageFileName);
             
-            // Insert users data into the database 
-            $query= "INSERT INTO users (fullname,	username, email, password, phone, address,	status, user_role, join_date, image) VALUES('$fullname','$username', '$email', '$hashedpass','$phone','$address','$status','$user_role', NOW(),'$imageFileName' )";
+            // Insert post data into the database 
+            $query= "INSERT INTO posts (title,	category_id,description, tags, status, author_id,	image, date_posted) VALUES('$title','$category_id', '$description', '$tags','$status','$author_id','$imageFileName', Now() )";
             $saveUser=mysqli_query($dbc,$query);
             if($saveUser){ 
-              header("Location:users.php?do=Manage");
+              header("Location:posts.php?do=Manage");
             } else { 
               die("MySQL Database Error.". mysqli_error($dbc));
             }
 
-          }
+         
 
           
         }
@@ -358,7 +375,7 @@ include 'inc/admin/menubar.php';
           </div>
          </div>
          <div class="col-lg-12 text-right">
-          <a href="users.php?do=Manage" class="btn btn-warning">Back </a>
+          <a href="posts.php?do=Manage" class="btn btn-warning">Back </a>
           <input type="hidden" name="updateUserID" value="<?php echo $user_id; ?>">
           <input type="submit" name="update" id="" class="btn btn-primary" value="Update User">
          </div>
@@ -496,19 +513,19 @@ include 'inc/admin/menubar.php';
        else if ($do=="Delete"){ 
         // Delete User
         if(isset($_GET['d_id'])) { 
-          $deleteUserID=$_GET['d_id'];
+          $deletePostsID=$_GET['d_id'];
           // Remove old image from the Folder
-              $removeQuery="SELECT * FROM users where user_id='$deleteUserID'";
+              $removeQuery="SELECT * FROM posts where post_id='$deletePostsID'";
               $removeImage= mysqli_query($dbc,$removeQuery);
               while($row = mysqli_fetch_assoc($removeImage)){ 
                 $rImage= $row['image'];
-                unlink("dist/img/users/". $rImage);
+                unlink("dist/img/posts/". $rImage);
               }
-            $deleteQuery="DELETE FROM users where user_id='$deleteUserID'";
+            $deleteQuery="DELETE FROM posts where post_id='$deletePostsID'";
             $deleteUser=mysqli_query($dbc,$deleteQuery);
             if($deleteUser){ 
 
-                header("Location:users.php?do=Manage");
+                header("Location:posts.php?do=Manage");
 
               } else { 
 
