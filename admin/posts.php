@@ -271,7 +271,7 @@ include 'inc/admin/menubar.php';
         if(isset($_POST['publish'])){ 
           $title              =mysqli_real_escape_string($dbc,$_POST['title']);
           $category_id        =mysqli_real_escape_string($dbc,$_POST['category_id']);
-          $description        =mysqli_real_escape_string($dbc,$_POST['description']);
+          $description        =strip_tags(mysqli_real_escape_string($dbc,$_POST['description']));
           $tags               =mysqli_real_escape_string($dbc,$_POST['tags']);
           $status             =mysqli_real_escape_string($dbc,$_POST['status']);
           $author_id          =mysqli_real_escape_string($dbc,$_SESSION['user_id']);

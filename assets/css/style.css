@@ -201,7 +201,7 @@ section,
     overflow: hidden;
 	padding: 8px 25px;
     background-color: #2f5888;
-    color: #fff;
+    color: #fff !important;
     border: none;
     font-size: 14px;
     font-weight: 600;
@@ -210,6 +210,8 @@ section,
     z-index: 1;
     transition: all 0.3s ease-in-out;
 }
+
+
 .btn-main:after {
     background: #fff;
     content: "";
