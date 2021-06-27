@@ -2,6 +2,7 @@
 include 'inc/admin/header.php';
 include 'inc/admin/topbar.php';
 include 'inc/admin/menubar.php';
+ $success=array();
 ?>
 
 <!-- Body Content Start -->
@@ -75,11 +76,11 @@ include 'inc/admin/menubar.php';
           </div>
           <div class=" form-group">
            <label for="password">Password</label>
-           <input type="password" name="password" id="" class="form-control" placeholder="Enter password">
+           <input type="password" name="password" id="" class="form-control" placeholder="*****">
           </div>
           <div class="form-group">
            <label for="re-password">Re-type Password</label>
-           <input type="password" name="re-password" id="" class="form-control" placeholder="Re-enter password">
+           <input type="password" name="re-password" id="" class="form-control">
           </div>
          </div>
 

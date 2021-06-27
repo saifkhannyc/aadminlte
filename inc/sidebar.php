@@ -7,28 +7,29 @@
 
    <!-- Sidebar Latest News Slider Start -->
    <div class="sidebar-latest-news owl-carousel owl-theme">
-
-    <?php 
-      $query="SELECT * FROM posts ORDER BY date_posted DESC LIMIT 3";
-      $allPosts=mysqli_query($dbc,$query);
-      $count=mysqli_num_rows($allPosts);
-      if($count<= 0) 
-      { 
-        echo '<div class="alert alert-info"> No posts found yet.</div>';
-      } else
-      { 
-        while ($row=mysqli_fetch_assoc($allPosts)) 
-        {
-          $post_id      =$row['post_id'];
-          $title        =$row['title'];
-          $description  =$row['description'];
-          $image        =$row['image'];
-          $category_id  =$row['category_id'];
-          $author_id    =$row['author_id'];
-          $tags         =$row['tags'];
-          $status       =$row['status'];
-          $date_posted  =$row['date_posted'];
-          ?>
+    <!-- :: Display last 3 blog post query code starts here :: -->
+    <?php
+$query = "SELECT * FROM posts ORDER BY date_posted DESC LIMIT 3";
+$allPosts = mysqli_query($dbc, $query);
+$count = mysqli_num_rows($allPosts);
+if ($count <= 0)
+{
+    echo '<div class="alert alert-info"> No posts found yet.</div>';
+}
+else
+{
+    while ($row = mysqli_fetch_assoc($allPosts))
+    {
+        $post_id = $row['post_id'];
+        $title = $row['title'];
+        $description = $row['description'];
+        $image = $row['image'];
+        $category_id = $row['category_id'];
+        $author_id = $row['author_id'];
+        $tags = $row['tags'];
+        $status = $row['status'];
+        $date_posted = $row['date_posted'];
+?>
 
     <!-- Latest News Start -->
     <div class="item">
@@ -36,31 +37,34 @@
       <!-- Latest News Slider Image -->
       <div class="latest-news-image">
        <a href="single.php?article=<?php echo $post_id; ?>">
-        <?php if(!empty($image)){ ?>
+        <?php if (!empty($image))
+        { ?>
 
-        <img src="admin/dist/img/posts/<?php echo $image; ?>" alt="<?php echo $image;?>" class="img-fluid">
+        <img src="admin/dist/img/posts/<?php echo $image; ?>" alt="<?php echo $image; ?>" class="img-fluid">
 
         <?php
-        } else { 
-        ?>
+        }
+        else
+        {
+?>
         <img src="admin/dist/img/posts/boxed-bg.png" class="img-fluid">
         <?php
         }
-        ?>
+?>
        </a>
       </div>
       <!-- Latest News Slider Heading -->
       <h5><a href="single.php?article=<?php echo $post_id; ?>"><?php echo $title; ?></a></h5>
       <!-- Latest News Slider Paragraph -->
-      <p><?php echo strip_tags(substr($description,0,150));?></p>
+      <p><?php echo strip_tags(substr($description, 0, 150)); ?></p>
      </div>
     </div>
     <!--  Latest News End -->
     <?php
-       }
-      }
-    ?>
-
+    }
+}
+?>
+    <!-- :: Display last 3 blog post query code ends here :: -->
    </div>
    <!-- Sidebar Latest News Slider End -->
   </div>
@@ -92,34 +96,38 @@
    <h4>Recent Posts</h4>
    <div class="title-border"></div>
    <div class="recent-post">
-    <?php 
-     
-    $query="SELECT a.title, date_posted, b.image as 'User_image' FROM posts a INNER JOIN users b on  a.author_id=b.user_id order by date_posted DESC LIMIT 5";
-    $readPosts=mysqli_query($dbc, $query);
-    while ($row=mysqli_fetch_assoc($readPosts)) {
-        $title=$row['title'];
-        $date_posted=$row['date_posted'];
-        $user_image=$row['User_image']; ?>
+    <?php
+
+$query = "SELECT a.title, date_posted, b.image as 'User_image' FROM posts a INNER JOIN users b on  a.author_id=b.user_id order by date_posted DESC LIMIT 5";
+$readPosts = mysqli_query($dbc, $query);
+while ($row = mysqli_fetch_assoc($readPosts))
+{
+    $title = $row['title'];
+    $date_posted = $row['date_posted'];
+    $user_image = $row['User_image']; ?>
     <!-- Recent Post Item Content Start -->
     <div class="recent-post-item">
      <div class="row">
       <!-- Item Image -->
       <div class="col-md-4">
-       <?php if(!empty($user_image)){ ?>
+       <?php if (!empty($user_image))
+    { ?>
 
-       <img src="admin/dist/img/users/<?php echo $user_image; ?>" alt="<?php echo $user_image;?>" class="img-fluid">
+       <img src="admin/dist/img/users/<?php echo $user_image; ?>" alt="<?php echo $user_image; ?>" class="img-fluid">
 
        <?php
-            } else { 
-           ?>
+    }
+    else
+    {
+?>
        <img src="admin/dist/img/users/default.png" class="img-fluid">
        <?php
-           }
-           ?>
+    }
+?>
       </div>
       <!-- Item Tite -->
       <div class="col-md-8 no-padding">
-       <h5><?php echo $title;?></h5>
+       <h5><?php echo $title; ?></h5>
        <ul>
         <li><i class="fa fa-clock-o"></i><?php echo date("M j, Y", strtotime($date_posted)); ?></li>
         <li><i class="fa fa-comment-o"></i>15</li>
@@ -129,8 +137,8 @@
     </div>
     <!-- Recent Post Item Content End -->
     <?php
-    }
-    ?>
+}
+?>
 
 
 
@@ -144,12 +152,13 @@
    <!-- Blog Category Start -->
    <div class="blog-categories">
     <ul>
-     <?php 
-    $query="SELECT a.cat_name, COUNT(DISTINCT(b.post_Id)) as 'Total' FROM category a LEFT JOIN posts b on a.cat_id= b.category_id group by cat_name order by COUNT(DISTINCT(b.post_Id)) DESC";
-    $readCategory=mysqli_query($dbc, $query);
-    while ($row=mysqli_fetch_assoc($readCategory)) {
-        $cat_name  =$row['cat_name'];
-        $cat_count =$row['Total']; ?>
+     <?php
+$query = "SELECT a.cat_name, COUNT(DISTINCT(b.post_Id)) as 'Total' FROM category a LEFT JOIN posts b on a.cat_id= b.category_id group by cat_name order by COUNT(DISTINCT(b.post_Id)) DESC";
+$readCategory = mysqli_query($dbc, $query);
+while ($row = mysqli_fetch_assoc($readCategory))
+{
+    $cat_name = $row['cat_name'];
+    $cat_count = $row['Total']; ?>
 
      <!-- Category Item -->
      <li>
@@ -160,8 +169,8 @@
 
      </li>
      <?php
-    }      
-     ?>
+}
+?>
     </ul>
    </div>
    <!-- Blog Category End -->
@@ -245,17 +254,22 @@
    <div class="title-border"></div>
    <!-- Meta Tag List Start -->
    <div class="meta-tags">
-    <span>Business</span>
-    <span>Technology</span>
-    <span>Corporate</span>
-    <span>Web Design</span>
-    <span>Development</span>
-    <span>Graphic</span>
-    <span>Digital Marketing</span>
-    <span>SEO</span>
-    <span>Social Media</span>
+    <?php
+$query = "SELECT DISTINCT tags FROM posts LIMIT 10";
+$readTags = mysqli_query($dbc, $query);
+while ($row = mysqli_fetch_assoc($readTags))
+{
+    $tags = $row['tags'];
+    $tt = explode(",", $tags);
+    foreach ($tt as $t)
+    {
+?>
+    <a href="search.php?tags=<?php echo $t; ?>"><span><?php echo $t; ?></span></a>
+    <?php
+    }
+}
+?>
+    <!-- Meta Tag List End -->
    </div>
-   <!-- Meta Tag List End -->
-  </div>
 
- </div>
+  </div>

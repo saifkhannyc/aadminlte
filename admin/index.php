@@ -25,11 +25,23 @@
       $image                 =$row['image'];
       $join_date             =$row['join_date'];
       // Check user password and email and status
-      if($_SESSION['email']==$email && $password==$hashpassword) { 
+      if($_SESSION['email']==$email && $password==$hashpassword && $_SESSION['user_role'] ==1) { 
        
        header("Location:dashboard.php");
 
-      } else if ($_SESSION['email']!=$email || $password!=$hashpassword) { 
+      } else if($_SESSION['email']==$email && $password==$hashpassword && $_SESSION['user_role'] ==2) { 
+       
+       header("Location:dashboard.php");
+
+      } 
+
+      else if($_SESSION['email']==$email && $password==$hashpassword && $_SESSION['user_role'] ==3) {  
+
+       header("Location:../index.php");
+
+      } 
+      
+      else if ($_SESSION['email']!=$email || $password!=$hashpassword) { 
 
         $loginerror[]="Invalid username or password";
 
@@ -38,6 +50,8 @@
         $loginerror[]="You are not an active user";
 
       } 
+
+      
       
       else { 
 

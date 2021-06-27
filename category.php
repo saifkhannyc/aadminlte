@@ -1,4 +1,4 @@
-<?php 
+<?php
 include 'inc/header.php';
 ?>
 
@@ -35,54 +35,69 @@ include 'inc/header.php';
    <!-- Blog Posts Start -->
    <div class="col-md-8">
 
-    <?php 
-    if(isset($_GET['category'])){ 
-     $catID= mysqli_real_escape_string($dbc,$_GET['category']);
-    
-      $query="SELECT * FROM posts WHERE category_id='$catID' ORDER BY post_id DESC";
-      $allPosts=mysqli_query($dbc,$query);
-      $count=mysqli_num_rows($allPosts);
-      if($count<= 0) 
-      { 
-        echo '<div class="alert alert-info"> No posts found in this category.</div>';
-      } else
-      {
-          while ($row=mysqli_fetch_assoc($allPosts)) {
-              $post_id      =$row['post_id'];
-              $title        =$row['title'];
-              $description  =$row['description'];
-              $image        =$row['image'];
-              $category_id  =$row['category_id'];
-              $author_id    =$row['author_id'];
-              $tags         =$row['tags'];
-              $status       =$row['status'];
-              $date_posted  =$row['date_posted']; ?>
+    <?php
+if (isset($_GET['category']))
+{
+    $catName = mysqli_real_escape_string($dbc, $_GET['category']);
+    $catSelectId = "SELECT * FROM category WHERE cat_name='$catName'";
+    $readCat = mysqli_query($dbc, $catSelectId);
+
+    while ($row = mysqli_fetch_assoc($readCat))
+    {
+        $cat_id = $row['cat_id'];
+        $cat_name = $row['cat_name'];
+    }
+
+    $query = "SELECT * FROM posts WHERE category_id='$cat_id' ORDER BY post_id DESC";
+    $allPosts = mysqli_query($dbc, $query);
+    $count = mysqli_num_rows($allPosts);
+    if ($count <= 0)
+    {
+        echo '<div class="alert alert-info"> No posts found in this category...</div>';
+    }
+    else
+    {
+        while ($row = mysqli_fetch_assoc($allPosts))
+        {
+            $post_id = $row['post_id'];
+            $title = $row['title'];
+            $description = $row['description'];
+            $image = $row['image'];
+            $category_id = $row['category_id'];
+            $author_id = $row['author_id'];
+            $tags = $row['tags'];
+            $status = $row['status'];
+            $date_posted = $row['date_posted']; ?>
     <!-- Single Item Blog Post Start -->
     <div class="blog-post">
      <!-- Blog Banner Image -->
      <div class="blog-banner">
       <a href="single.php?article=<?php echo $post_id; ?>">
-       <?php if (!empty($image)) { ?>
+       <?php if (!empty($image))
+            { ?>
 
-       <img src="admin/dist/img/posts/<?php echo $image; ?>" alt="<?php echo $image;?>" class="img-fluid">
+       <img src="admin/dist/img/posts/<?php echo $image; ?>" alt="<?php echo $image; ?>" class="img-fluid">
 
        <?php
-        } else {
-            ?>
+            }
+            else
+            {
+?>
        <img src="admin/dist/img/posts/boxed-bg.png" class="img-fluid">
        <?php
-        } ?>
+            } ?>
        <!-- Post Category Names -->
        <div class="blog-category-name">
         <?php
-            $query="SELECT* FROM category where cat_id='$category_id'";
-              $category_name=mysqli_query($dbc, $query);
-              while ($row = mysqli_fetch_array($category_name)) {
-                  $cat_id=$row['cat_id'];
-                  $cat_name=$row['cat_name']; ?>
+            $query = "SELECT* FROM category where cat_id='$category_id'";
+            $category_name = mysqli_query($dbc, $query);
+            while ($row = mysqli_fetch_array($category_name))
+            {
+                $cat_id = $row['cat_id'];
+                $cat_name = $row['cat_name']; ?>
         <h6><?php echo $cat_name; ?></h6>
         <?php
-              } ?>
+            } ?>
 
        </div>
       </a>
@@ -100,15 +115,16 @@ include 'inc/header.php';
          <ul>
           <li><i class="fa fa-calendar"></i><?php echo date("dS \of F, Y", strtotime($date_posted)); ?></li>
           <?php
-            $query="SELECT* FROM users where user_id='$author_id'";
-              $fullname=mysqli_query($dbc, $query);
-              while ($row = mysqli_fetch_array($fullname)) {
-                  $user_id=$row['user_id'];
-                  $name=$row['fullname']; ?>
+            $query = "SELECT* FROM users where user_id='$author_id'";
+            $fullname = mysqli_query($dbc, $query);
+            while ($row = mysqli_fetch_array($fullname))
+            {
+                $user_id = $row['user_id'];
+                $name = $row['fullname']; ?>
           <li><i class="fa fa-user"></i>by - <?php echo $name; ?>
           </li>
           <?php
-              } ?>
+            } ?>
 
           <li><i class="fa fa-heart"></i>(50)</li>
          </ul>
@@ -126,11 +142,11 @@ include 'inc/header.php';
 
 
     <?php
-          }
-      }
+        }
+    }
+}
 
-      }
-    ?>
+?>
 
 
     <!-- Blog Paginetion Design Start -->
@@ -157,7 +173,7 @@ include 'inc/header.php';
 
 
    <!-- Blog Right Sidebar -->
-   <?php include'inc/sidebar.php'; ?>
+   <?php include 'inc/sidebar.php'; ?>
    <!-- Right Sidebar End -->
   </div>
  </div>
@@ -165,7 +181,7 @@ include 'inc/header.php';
 <!-- ::::::::::: Blog With Right Sidebar End ::::::::: -->
 
 
-<?php 
+<?php
 include 'inc/footer.php';
 
 ?>

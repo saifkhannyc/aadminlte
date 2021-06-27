@@ -171,7 +171,7 @@
 
 <!-- BlueChip Extarnal Script -->
 <script type="text/javascript" src="assets/js/main.js"></script>
-<?php 
+<?php
 ob_end_flush();
 ?>
 </body>

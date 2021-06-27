@@ -211,6 +211,13 @@ section,
     transition: all 0.3s ease-in-out;
 }
 
+.profile-user-img {
+    border: 3px solid #adb5bd;
+    margin: 0 auto;
+    padding: 3px;
+    width: 100px;
+}
+
 
 .btn-main:after {
     background: #fff;

@@ -1,6 +1,8 @@
-<?php 
+<?php
 include 'inc/db.php';
 ob_start();
+session_start();
+
 ?>
 <!doctype html>
 <html lang="en">
@@ -62,55 +64,90 @@ ob_start();
       </button>
 
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
-       <ul class="navbar-nav ml-auto">
-        <?php 
-        $query="SELECT cat_id as 'pCatId', cat_name as 'pCatName' FROM category  where parent_id=0 and statuses=1 ORDER BY cat_name ASC";
-        $category_name=mysqli_query($dbc,$query);
-            while ($row = mysqli_fetch_assoc($category_name)) {
-                extract($row);
-                $subCat="SELECT cat_id as 'sCatID', cat_name AS 'sCatName' FROM     category where parent_id ='$pCatId' and statuses=1 ORDER BY cat_name ASC";
-                $subMenu=mysqli_query($dbc,$subCat);
-                $countSubMenu=mysqli_num_rows($subMenu);
-                if($countSubMenu==0){ ?>
+       <ul class="navbar-nav mx-auto">
+        <?php
+$query = "SELECT cat_id as 'pCatId', cat_name as 'pCatName' FROM category  where parent_id=0 and statuses=1 ORDER BY cat_name ASC";
+$category_name = mysqli_query($dbc, $query);
+while ($row = mysqli_fetch_assoc($category_name))
+{
+    extract($row);
+    $subCat = "SELECT cat_id as 'sCatID', cat_name AS 'sCatName' FROM     category where parent_id ='$pCatId' and statuses=1 ORDER BY cat_name ASC";
+    $subMenu = mysqli_query($dbc, $subCat);
+    $countSubMenu = mysqli_num_rows($subMenu);
+    if ($countSubMenu == 0)
+    { ?>
         <li class="nav-item">
-         <a class="nav-link" href="category.php?category=<?php echo $pCatId; ?>"><?php echo $pCatName; ?></a>
+         <a class="nav-link" href="category.php?category=<?php echo $pCatName; ?>"><?php echo $pCatName; ?></a>
         </li>
         <?php
-                }
-                else{ ?>
+    }
+    else
+    { ?>
         <li class="nav-item dropdown">
          <a class="nav-link dropdown-toggle" href="category.php?category=<?php echo $pCatId; ?>" id="navbarDropdown"
           role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <?php echo $pCatName; ?>
          </a>
          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <?php 
-            while($row=mysqli_fetch_assoc($subMenu)){ 
-                extract($row); ?>
-          <a class="dropdown-item" href="category.php?category=<?php echo $sCatID; ?>"><?php echo $sCatName; ?></a>
+          <?php
+        while ($row = mysqli_fetch_assoc($subMenu))
+        {
+            extract($row); ?>
+          <a class="dropdown-item" href="category.php?category=<?php echo $sCatName;; ?>"><?php echo $sCatName; ?></a>
 
           <?php
-            }
-         ?>
+        }
+?>
 
 
          </div>
         </li>
 
-
         <?php
-            }
-           
-        }
-        ?>
+    }
+}
 
-
+?>
 
        </ul>
+       <ul navbar-nav mx-auto>
+        <?php
+if (empty($_SESSION['email']) && empty($_SESSION['user_id']))
+{ ?>
+        <!-- <li class="nav-item"> -->
+
+        <a class="btn btn-primary" href="admin/register.php">Register</a>
+        <a class="btn btn-success ml-2" href="admin/index.php">Login</a>
+        <!-- </li> -->
+       </ul>
+       <?php
+}
+else
+{ ?>
+       <ul navbar-nav ml-auto>
+        <li class="nav-item dropdown">
+         <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Hello! <?php echo $_SESSION['fullname']; ?>
+         </a>
+         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="userprofile.php">My profile</a>
+          <a class="dropdown-item" href="logout.php">Logout</a>
+         </div>
+        </li>
+        <?php
+}
+
+?>
+       </ul>
+
+
       </div>
-     </nav>
+
     </div>
+    </nav>
    </div>
+  </div>
   </div>
  </header>
  <!-- ::::::::::: Header Section End ::::::::: -->
